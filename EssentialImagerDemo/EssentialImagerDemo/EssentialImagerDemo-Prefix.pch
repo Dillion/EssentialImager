@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'EssentialImager' target in the 'EssentialImager' project
+// Prefix header for all source files of the 'EssentialImagerDemo' target in the 'EssentialImagerDemo' project
 //
 
 #import <Availability.h>

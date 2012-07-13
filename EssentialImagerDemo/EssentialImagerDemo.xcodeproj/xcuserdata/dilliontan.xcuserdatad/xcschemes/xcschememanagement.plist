@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>EssentialImager.xcscheme</key>
+		<key>EssentialImagerDemo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>4DDD48A215AAA3190088F8BC</key>
+		<key>4D79EC3215B08111007C9A90</key>
 		<dict>
 			<key>primary</key>
 			<true/>

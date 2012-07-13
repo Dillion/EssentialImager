@@ -222,15 +222,15 @@
     
     imageViewWithRoundedCorners.image = bImage;
     imageViewWithRoundedCorners.frame = CGRectMake(0, 0, bImage.size.width, bImage.size.height);
-    imageViewWithRoundedCorners.center = [imageViewWithRoundedCorners convertPoint:imageViewWithRoundedCorners.center fromView:imageViewWithRoundedCorners.superview];
+    imageViewWithRoundedCorners.center = CGPointMake(imageViewWithRoundedCorners.superview.frame.size.width/2, imageViewWithRoundedCorners.superview.frame.size.height/2);
     
     layerMaskedCircleImageView.image = bImage;
     layerMaskedCircleImageView.frame = CGRectMake(0, 0, bImage.size.width, bImage.size.height);
-    layerMaskedCircleImageView.center = [layerMaskedCircleImageView convertPoint:layerMaskedCircleImageView.center fromView:layerMaskedCircleImageView.superview];
+    layerMaskedCircleImageView.center = CGPointMake(layerMaskedCircleImageView.superview.frame.size.width/2, layerMaskedCircleImageView.superview.frame.size.height/2);
     
     imageMaskedRadialGradientImageView.image = bImage;
     imageMaskedRadialGradientImageView.frame = CGRectMake(0, 0, bImage.size.width, bImage.size.height);
-    imageMaskedRadialGradientImageView.center = [imageMaskedRadialGradientImageView convertPoint:imageMaskedRadialGradientImageView.center fromView:imageMaskedRadialGradientImageView.superview];
+    imageMaskedRadialGradientImageView.center = CGPointMake(layerMaskedCircleImageView.superview.frame.size.width/2, layerMaskedCircleImageView.superview.frame.size.height/2);
 }
 
 # pragma mark -

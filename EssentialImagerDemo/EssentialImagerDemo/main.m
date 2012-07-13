@@ -1,8 +1,8 @@
 //
 //  main.m
-//  EssentialImager
+//  EssentialImagerDemo
 //
-//  Created by Dillion Tan on 9/7/12.
+//  Created by Dillion Tan on 14/7/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
