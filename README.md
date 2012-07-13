@@ -30,6 +30,8 @@ Take a look at the demo project for examples
 [Nick Lockwood](https://github.com/nicklockwood/StandardPaths) for file paths  
 [Andrew Sliwinski](https://github.com/thisandagain/storage) for async file storage  
 
+Camera icon by Stanislav Levin, from The Noun Project (Attribution ( CC BY 3.0 ))
+
 --
 
 http://twitter.com/dilliontan
