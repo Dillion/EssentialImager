@@ -1,11 +1,11 @@
 /*
- 
+
  File: UIImage+Resize.m
  Abstract: Modified to focus on resizing for logical display size
  or uncompressed size in MB, using scale determined by StandardPaths
- 
+
  Copyright (c) 2012 Dillion Tan
- 
+
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
  files (the "Software"), to deal in the Software without
@@ -14,10 +14,10 @@
  copies of the Software, and to permit persons to whom the
  Software is furnished to do so, subject to the following
  conditions:
- 
+
  The above copyright notice and this permission notice shall be
  included in all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -26,7 +26,7 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
- 
+
  */
 
 // UIImage+Resize.m
@@ -35,6 +35,7 @@
 // No warranty is expressed or implied.
 
 #import "UIImage+Resize.h"
+#import "StandardPaths.h"
 
 @implementation UIImage (Resize)
 
@@ -46,27 +47,27 @@
                                   bounds:(CGSize)bounds
                     interpolationQuality:(CGInterpolationQuality)quality {
     CGFloat screenScale = SP_SCREEN_SCALE();
-    
+
     // note! CGImageGetWidth/CGImageGetHeight return different values from self.size.width/self.size.height depending on orientation
     CGFloat horizontalRatio = bounds.width / self.size.width;
     CGFloat verticalRatio = bounds.height / self.size.height;
     CGFloat ratio;
-    
+
     switch (contentMode) {
         case UIViewContentModeScaleAspectFill:
             ratio = MAX(horizontalRatio, verticalRatio);
             break;
-            
+
         case UIViewContentModeScaleAspectFit:
             ratio = MIN(horizontalRatio, verticalRatio);
             break;
-            
+
         default:
             [NSException raise:NSInvalidArgumentException format:@"Unsupported content mode: %d", contentMode];
     }
-    
+
     CGSize newSize = CGSizeMake(floorf(self.size.width * screenScale * ratio), floorf(self.size.height * screenScale * ratio));
-    
+
     return [self resizedImage:newSize interpolationQuality:quality];
 }
 
@@ -77,13 +78,13 @@
     CGSize sourceResolution = CGSizeZero;
     sourceResolution.width = self.size.width;
     sourceResolution.height = self.size.height;
-    
+
     CGFloat sourceTotalPixels = sourceResolution.width * sourceResolution.height;
-    
+
     CGFloat ratio = destImageSize * imagePixelsPerMB / sourceTotalPixels;
-    
+
     CGSize newSize = CGSizeMake(floorf(self.size.width * ratio), floorf(self.size.height * ratio));
-    
+
     return [self resizedImage:newSize interpolationQuality:quality];
 }
 
@@ -94,7 +95,7 @@
 // The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter
 - (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality {
     BOOL drawTransposed;
-    
+
     switch (self.imageOrientation) {
         case UIImageOrientationLeft:
         case UIImageOrientationLeftMirrored:
@@ -102,11 +103,11 @@
         case UIImageOrientationRightMirrored:
             drawTransposed = YES;
             break;
-            
+
         default:
             drawTransposed = NO;
     }
-    
+
     return [self resizedImage:newSize
                     transform:[self transformForOrientation:newSize]
                drawTransposed:drawTransposed
@@ -120,13 +121,13 @@
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
      interpolationQuality:(CGInterpolationQuality)quality {
-    
+
     CGFloat screenScale = SP_SCREEN_SCALE();
-    
+
     CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
     CGImageRef imageRef = self.CGImage;
-    
+
     // Build a context that's the same dimensions as the new size
     CGContextRef bitmap = CGBitmapContextCreate(NULL,
                                                 newRect.size.width,
@@ -135,31 +136,31 @@
                                                 0,
                                                 CGImageGetColorSpace(imageRef),
                                                 CGImageGetBitmapInfo(imageRef));
-    
+
     // Rotate and/or flip the image if required by its orientation
     CGContextConcatCTM(bitmap, transform);
-    
+
     // Set the quality level to use when rescaling
     CGContextSetInterpolationQuality(bitmap, quality);
-    
+
     // Draw into the context; this scales the image
     CGContextDrawImage(bitmap, transpose ? transposedRect : newRect, imageRef);
-    
+
     // Get the resized image from the context and a UIImage
     CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
     UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:screenScale orientation:UIImageOrientationUp];
-    
+
     // Clean up
     CGContextRelease(bitmap);
     CGImageRelease(newImageRef);
-    
+
     return newImage;
 }
 
 // Returns an affine transform that takes into account the image orientation when drawing a scaled image
 - (CGAffineTransform)transformForOrientation:(CGSize)newSize {
     CGAffineTransform transform = CGAffineTransformIdentity;
-    
+
     switch (self.imageOrientation) {
         case UIImageOrientationUp:
         case UIImageOrientationUpMirrored:
@@ -169,40 +170,40 @@
             transform = CGAffineTransformTranslate(transform, newSize.width, newSize.height);
             transform = CGAffineTransformRotate(transform, M_PI);
             break;
-            
+
         case UIImageOrientationLeft:           // EXIF = 6
         case UIImageOrientationLeftMirrored:   // EXIF = 5
             transform = CGAffineTransformTranslate(transform, newSize.width, 0);
             transform = CGAffineTransformRotate(transform, M_PI_2);
             break;
-            
+
         case UIImageOrientationRight:          // EXIF = 8
         case UIImageOrientationRightMirrored:  // EXIF = 7
             transform = CGAffineTransformTranslate(transform, 0, newSize.height);
             transform = CGAffineTransformRotate(transform, -M_PI_2);
             break;
     }
-    
+
     switch (self.imageOrientation) {
         case UIImageOrientationUp:
         case UIImageOrientationLeft:
         case UIImageOrientationRight:
         case UIImageOrientationDown:
             break;
-            
+
         case UIImageOrientationUpMirrored:     // EXIF = 2
         case UIImageOrientationDownMirrored:   // EXIF = 4
             transform = CGAffineTransformTranslate(transform, newSize.width, 0);
             transform = CGAffineTransformScale(transform, -1, 1);
             break;
-            
+
         case UIImageOrientationLeftMirrored:   // EXIF = 5
         case UIImageOrientationRightMirrored:  // EXIF = 7
             transform = CGAffineTransformTranslate(transform, newSize.height, 0);
             transform = CGAffineTransformScale(transform, -1, 1);
             break;
     }
-    
+
     return transform;
 }
 
