@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EIDemoViewController.h"
+#import "EIFullDemoViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface FullDemoAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong) EIDemoViewController *rootViewController;
+@property (nonatomic, strong) EIFullDemoViewController *rootViewController;
 
 @end

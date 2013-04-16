@@ -38,7 +38,6 @@
 //
 
 #import "NSData+Storage.h"
-#import "EDStorageManager.h"
 #import "StandardPaths.h"
 
 @implementation NSData (Storage)
@@ -47,7 +46,7 @@
 {
     float scale = [filePath scale];
 
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]];
+    NSData *imageData = [NSData dataWithContentsOfFile:filePath];
 
     if (!imageData)  {
         NSLog(@"file at %@ does not contain valid data", filePath);
@@ -62,33 +61,6 @@
     }
 
     return [UIImage imageWithCGImage:image.CGImage scale:scale orientation:image.imageOrientation];
-}
-
-- (void)persistToCacheWithExtension:(NSString *)extension success:(void (^)(NSURL *, NSUInteger))success failure:(void (^)(NSError *))failure
-{
-    [[EDStorageManager sharedInstance] persistData:self withExtension:extension toLocation:kDirectoryCache success:^(NSURL *url, NSUInteger size) {
-        success(url, size);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
-
-- (void)persistToTempWithExtension:(NSString *)extension success:(void (^)(NSURL *, NSUInteger))success failure:(void (^)(NSError *))failure
-{
-    [[EDStorageManager sharedInstance] persistData:self withExtension:extension toLocation:kDirectoryTemporary success:^(NSURL *url, NSUInteger size) {
-        success(url, size);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
-
-- (void)persistToDocumentsWithExtension:(NSString *)extension success:(void (^)(NSURL *, NSUInteger))success failure:(void (^)(NSError *))failure
-{
-    [[EDStorageManager sharedInstance] persistData:self withExtension:extension toLocation:kDirectoryPublic success:^(NSURL *url, NSUInteger size) {
-        success(url, size);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
 }
 
 @end

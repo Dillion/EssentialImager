@@ -1,7 +1,8 @@
 /*
  
- File: UIImage+Storage.h
- Abstract: Modified to replace with persist PNG function
+ File: EIDemoViewController.h
+ Abstract: Demo Controller to show usage of image picker with blocks, 
+ and subsequent resizing, saving, clipping and masking of returned image
  
  Copyright (c) 2012 Dillion Tan
  
@@ -28,18 +29,16 @@
  
  */
 
-//
-//  UIImage+Storage.h
-//  storage
-//
-//  Created by Andrew Sliwinski on 6/23/12.
-//  Copyright (c) 2012 DIY, Co. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
-@interface UIImage (Storage)
+@interface EISimpleDemoViewController : UIViewController <UIActionSheetDelegate>
 
-- (void)persistToCacheAsPNG:(void (^)(NSURL *url, NSUInteger size))success failure:(void (^)(NSError *error))failure;
+@property (nonatomic, strong) UIButton *buttonWithImage;
+@property (nonatomic, strong) UIImageView *imageViewWithRoundedCorners;
+
+@property (nonatomic, strong) EIImagePickerDelegate *imagePickerDelegate;
+
+- (void)presentPhotoPicker;
+- (void)setOriginalImage:(UIImage *)aImage resizedImage:(UIImage *)bImage;
 
 @end

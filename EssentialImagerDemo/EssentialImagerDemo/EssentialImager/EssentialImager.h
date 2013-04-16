@@ -32,8 +32,9 @@
 #define EssentialImager_EssentialImager_h
 
 #import "StandardPaths.h"
-#import "EDStorage.h"
 #import "UIImage+Resize.h"
+#import "NSData+Storage.h"
 #import "EIImagePickerDelegate.h"
+#import "EIOperationManager.h"
 
 #endif

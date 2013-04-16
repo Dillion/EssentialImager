@@ -1,8 +1,8 @@
 /*
  
- File: EIDemoViewController.h
- Abstract: Demo Controller to show usage of image picker with blocks, 
- and subsequent resizing, saving, clipping and masking of returned image
+ File: NSData+Storage.h
+ Abstract: Modified to add retrieval of image from file url and
+ set scale based on suffix
  
  Copyright (c) 2012 Dillion Tan
  
@@ -29,21 +29,19 @@
  
  */
 
+//
+//  NSData+Storage.h
+//  storage
+//
+//  Created by Andrew Sliwinski on 6/24/12.
+//  Copyright (c) 2012 DIY, Co. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface EIDemoViewController : UIViewController <UIActionSheetDelegate>
+@interface NSData (Storage)
 
-@property (nonatomic, strong) UILabel *summaryLabel;
-@property (nonatomic, strong) UIButton *buttonWithImage;
-@property (nonatomic, strong) UIButton *buttonWithBackgroundImage;
-
-@property (nonatomic, strong) UIImageView *imageViewWithRoundedCorners;
-@property (nonatomic, strong) UIImageView *layerMaskedCircleImageView;
-@property (nonatomic, strong) UIImageView *imageMaskedRadialGradientImageView;
-
-@property (nonatomic, strong) EIImagePickerDelegate *imagePickerDelegate;
-
-- (void)presentPhotoPicker;
-- (void)setOriginalImage:(UIImage *)aImage resizedImage:(UIImage *)bImage;
++ (UIImage *)imageFromFile:(NSString *)filePath;
 
 @end

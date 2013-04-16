@@ -1,7 +1,7 @@
 /*
  
  File: EIDemoViewController.m
- Abstract: Demo Controller to show usage of image picker with blocks, 
+ Abstract: Demo Controller to show usage of image picker with blocks,
  and subsequent resizing, saving, clipping and masking of returned image
  
  Copyright (c) 2012 Dillion Tan
@@ -29,13 +29,13 @@
  
  */
 
-#import "EIDemoViewController.h"
+#import "EIFullDemoViewController.h"
 
-@interface EIDemoViewController ()
+@interface EIFullDemoViewController ()
 
 @end
 
-@implementation EIDemoViewController
+@implementation EIFullDemoViewController
 
 @synthesize summaryLabel;
 @synthesize buttonWithImage;
@@ -135,7 +135,7 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedImage"]) { // test cached image
         NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedImage"];
         
-        UIImage *cachedImage = [NSData imageFromFile:urlString];
+        UIImage *cachedImage = [NSData imageFromFile:[[[NSFileManager defaultManager] cacheDataPath] stringByAppendingPathComponent:urlString]];
         
         if (cachedImage) {
             NSLog(@"logical size is %f:%f scale %f", cachedImage.size.width, cachedImage.size.height, cachedImage.scale);
@@ -162,8 +162,10 @@
     if (!imagePickerDelegate) {
         self.imagePickerDelegate = [[EIImagePickerDelegate alloc] init];
         
-        __weak EIDemoViewController *controller = self;
+        __weak EIFullDemoViewController *weakController = self;
         [imagePickerDelegate setImagePickerCompletionBlock:^(UIImage *pickerImage) {
+            
+            __strong EIFullDemoViewController *strongController = weakController;
             
             NSLog(@"logical size is %f:%f scale %f", pickerImage.size.width, pickerImage.size.height, pickerImage.scale);
             
@@ -172,11 +174,11 @@
             UIImage *resizedImage = [pickerImage resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120, 120) interpolationQuality:kCGInterpolationDefault];
             
             // Use uncompressed size to constrain resizing
-//            UIImage *resizedImage = [pickerImage resizedImageWithUncompressedSizeInMB:1.0 interpolationQuality:kCGInterpolationDefault];
+            //            UIImage *resizedImage = [pickerImage resizedImageWithUncompressedSizeInMB:1.0 interpolationQuality:kCGInterpolationDefault];
             
             NSLog(@"logical size is %f:%f scale %f", resizedImage.size.width, resizedImage.size.height, resizedImage.scale);
             
-            [controller setOriginalImage:pickerImage resizedImage:resizedImage];
+            [strongController setOriginalImage:pickerImage resizedImage:resizedImage];
             
             // remove the image if previously saved
             if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedImage"]) {
@@ -184,22 +186,16 @@
                 [[NSFileManager defaultManager] removeItemAtURL:[NSURL URLWithString:cachedFilePath] error:NULL];
             }
             
-            // saving synchronously
-//            NSString *assetName = [NSString stringWithFormat:@"%@.png", [[NSProcessInfo processInfo]     globallyUniqueString]];
-//            assetName = [assetName stringByAppendingScaleSuffix]; // add scale suffix to extension
-//            NSString *assetPath     = [[[NSFileManager defaultManager] cacheDataPath] stringByAppendingPathComponent:assetName];
-//            NSURL *fileURL = [NSURL fileURLWithPath:assetPath];
-//            [UIImagePNGRepresentation(resizedImage) writeToURL:fileURL atomically:NO];
-//            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", fileURL] forKey:@"savedImage"];
+            NSString *assetName = [NSString stringWithFormat:@"%@.png", [[NSProcessInfo processInfo]     globallyUniqueString]];
+            assetName = [assetName stringByAppendingScaleSuffix]; // add scale suffix to extension
+            NSString *assetPath     = [[[NSFileManager defaultManager] cacheDataPath] stringByAppendingPathComponent:assetName];
             
-            // saving asynchronously
-            [resizedImage persistToCacheAsPNG:^(NSURL *url, NSUInteger size) {
-                NSLog(@"Complete: %@ | %d", url, size);
-                
-                // save the file path
-                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", url] forKey:@"savedImage"];
-            } failure:^(NSError *error) {
-                NSLog(@"Error: %@", error);
+            // saving synchronously
+            //            [UIImagePNGRepresentation(resizedImage) writeToFile:assetPath atomically:NO];
+            //            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", assetName] forKey:@"savedImage"];
+            
+            [[EIOperationManager defaultManager] saveImage:resizedImage toPath:assetPath withBlock:^(BOOL success) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@", assetName] forKey:@"savedImage"];
             }];
             
         }];

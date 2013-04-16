@@ -1,8 +1,8 @@
 /*
  
- File: EDStorageManager.h
- Abstract: Modified to use directory paths from StandardPaths,
- add scale suffix to extension
+ File: EIDemoViewController.h
+ Abstract: Demo Controller to show usage of image picker with blocks, 
+ and subsequent resizing, saving, clipping and masking of returned image
  
  Copyright (c) 2012 Dillion Tan
  
@@ -29,42 +29,21 @@
  
  */
 
-//
-//  EDStorageManager.h
-//  storage
-//
-//  Created by Andrew Sliwinski on 6/23/12.
-//  Copyright (c) 2012 DIY, Co. All rights reserved.
-//
+#import <UIKit/UIKit.h>
 
-#import <Foundation/Foundation.h>
+@interface EIFullDemoViewController : UIViewController <UIActionSheetDelegate>
 
-//
+@property (nonatomic, strong) UILabel *summaryLabel;
+@property (nonatomic, strong) UIButton *buttonWithImage;
+@property (nonatomic, strong) UIButton *buttonWithBackgroundImage;
 
-#define DEFINE_SHARED_INSTANCE_USING_BLOCK(block) \
-static dispatch_once_t pred = 0; \
-__strong static id _sharedObject = nil; \
-dispatch_once(&pred, ^{ \
-_sharedObject = block(); \
-}); \
-return _sharedObject; \
+@property (nonatomic, strong) UIImageView *imageViewWithRoundedCorners;
+@property (nonatomic, strong) UIImageView *layerMaskedCircleImageView;
+@property (nonatomic, strong) UIImageView *imageMaskedRadialGradientImageView;
 
-typedef enum // changed to match paths from StandardPaths
-{
-    kDirectoryPublic,
-    kDirectoryPrivate,
-    kDirectoryCache,
-    kDirectoryOffline,
-    kDirectoryTemporary,
-    kDirectoryResource,
-} Location;
+@property (nonatomic, strong) EIImagePickerDelegate *imagePickerDelegate;
 
-@interface EDStorageManager : NSObject
-{
-    @private NSOperationQueue *queue;
-}
-
-+ (EDStorageManager *)sharedInstance;
-- (void)persistData:(id)data withExtension:(NSString *)ext toLocation:(Location)location success:(void (^)(NSURL *url, NSUInteger size))success failure:(void (^)(NSError *error))failure;
+- (void)presentPhotoPicker;
+- (void)setOriginalImage:(UIImage *)aImage resizedImage:(UIImage *)bImage;
 
 @end

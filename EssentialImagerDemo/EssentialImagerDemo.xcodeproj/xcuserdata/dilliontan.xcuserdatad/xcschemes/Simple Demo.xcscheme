@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
+   LastUpgradeVersion = "0460"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4D79EC3215B08111007C9A90"
-               BuildableName = "EssentialImagerDemo.app"
-               BlueprintName = "EssentialImagerDemo"
+               BuildableName = "EssentialImagerSimpleDemo.app"
+               BlueprintName = "EssentialImagerSimpleDemo"
                ReferencedContainer = "container:EssentialImagerDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4D79EC3215B08111007C9A90"
-            BuildableName = "EssentialImagerDemo.app"
-            BlueprintName = "EssentialImagerDemo"
+            BuildableName = "EssentialImagerSimpleDemo.app"
+            BlueprintName = "EssentialImagerSimpleDemo"
             ReferencedContainer = "container:EssentialImagerDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -51,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4D79EC3215B08111007C9A90"
-            BuildableName = "EssentialImagerDemo.app"
-            BlueprintName = "EssentialImagerDemo"
+            BuildableName = "EssentialImagerSimpleDemo.app"
+            BlueprintName = "EssentialImagerSimpleDemo"
             ReferencedContainer = "container:EssentialImagerDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4D79EC3215B08111007C9A90"
-            BuildableName = "EssentialImagerDemo.app"
-            BlueprintName = "EssentialImagerDemo"
+            BuildableName = "EssentialImagerSimpleDemo.app"
+            BlueprintName = "EssentialImagerSimpleDemo"
             ReferencedContainer = "container:EssentialImagerDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

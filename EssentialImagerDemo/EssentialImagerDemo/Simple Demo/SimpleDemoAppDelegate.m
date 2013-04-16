@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "SimpleDemoAppDelegate.h"
 
-@implementation AppDelegate
+@implementation SimpleDemoAppDelegate
 
 @synthesize window = _window;
 @synthesize rootViewController;
@@ -19,9 +19,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    self.rootViewController = [[EIDemoViewController alloc] init];
-    [self.window addSubview:rootViewController.view];
-    
+    self.window.rootViewController = [[EISimpleDemoViewController alloc] init];
     [self.window makeKeyAndVisible];
     
     return YES;

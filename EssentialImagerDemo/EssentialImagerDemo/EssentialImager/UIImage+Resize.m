@@ -137,24 +137,30 @@
                                                 CGImageGetColorSpace(imageRef),
                                                 CGImageGetBitmapInfo(imageRef));
 
-    // Rotate and/or flip the image if required by its orientation
-    CGContextConcatCTM(bitmap, transform);
+    if (bitmap == NULL) {
+        NSLog(@"Failed context creation - image format is not supported by device. To force creation, try setting colorspace as CGColorSpaceCreateDeviceRGB() and/or bitmapinfo as kCGImageAlphaNone");
+    } else {
+    
+        // Rotate and/or flip the image if required by its orientation
+        CGContextConcatCTM(bitmap, transform);
 
-    // Set the quality level to use when rescaling
-    CGContextSetInterpolationQuality(bitmap, quality);
+        // Set the quality level to use when rescaling
+        CGContextSetInterpolationQuality(bitmap, quality);
 
-    // Draw into the context; this scales the image
-    CGContextDrawImage(bitmap, transpose ? transposedRect : newRect, imageRef);
+        // Draw into the context; this scales the image
+        CGContextDrawImage(bitmap, transpose ? transposedRect : newRect, imageRef);
 
-    // Get the resized image from the context and a UIImage
-    CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
-    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:screenScale orientation:UIImageOrientationUp];
+        // Get the resized image from the context and a UIImage
+        CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
+        UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:screenScale orientation:UIImageOrientationUp];
 
-    // Clean up
-    CGContextRelease(bitmap);
-    CGImageRelease(newImageRef);
+        // Clean up
+        CGContextRelease(bitmap);
+        CGImageRelease(newImageRef);
 
-    return newImage;
+        return newImage;
+    }
+    return nil;
 }
 
 // Returns an affine transform that takes into account the image orientation when drawing a scaled image
