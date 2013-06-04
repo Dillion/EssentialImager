@@ -86,10 +86,16 @@
 
 - (void)imagePickerController:(UIImagePickerController *)aPicker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [aPicker dismissModalViewControllerAnimated:YES];
-    
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    
+    [aPicker dismissViewControllerAnimated:YES completion:nil];
+    UIImage *image;
+    if (aPicker.allowsEditing)
+    {
+        image = [info valueForKey:UIImagePickerControllerEditedImage];
+    }
+    else
+    {
+        image = [info valueForKey:UIImagePickerControllerOriginalImage];
+    }
     if (image && pickerCompletionBlock) {
         pickerCompletionBlock(image);
     }
