@@ -1,6 +1,6 @@
-##Essential Imager
+## Essential Imager
 
-###Summary
+### Summary
 A painless solution for 
 
  - Block based UIImagePickerController delegate in ARC
@@ -13,7 +13,7 @@ A painless solution for
 
 --
 
-###Usage
+### Usage
 
 Requires iOS5  
 Copy the EssentialImager folder  
@@ -25,7 +25,7 @@ Take a look at the demo project for examples
 
 --
 
-###Credits  
+### Credits  
 [Trevor Harmon](http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/)  for image resizing operations  
 [Nick Lockwood](https://github.com/nicklockwood/StandardPaths) for file paths  
 [Andrew Sliwinski](https://github.com/thisandagain/storage) for async file storage  
